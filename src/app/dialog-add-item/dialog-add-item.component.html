@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>{{data.partNumber}}</h1>
+<p>{{data.description1}}</p>
+<p>{{data.description2}}</p>
+<div mat-dialog-content>
+  <p>Quantity?</p>
+  <mat-form-field>
+    <input matInput [(ngModel)]="input.quantity">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="input.quantity" cdkFocusInitial>Ok</button>
+</div>

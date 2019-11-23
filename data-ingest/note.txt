@@ -1,0 +1,3 @@
+STREAMLINE COPPER TUBE
+(.*)\t(.*)\t(.*)\t(.*)\t(.*)\t(.*)\t(.*)\t(.*)\t(.*)\t(.*)
+{"partNumber": "$1", "prtgrp": "$2", "description1": "$3", "description2": "$4", "pieceQty": $5, "bndlQty": $6, "liftQty": $7, "upcCode": "$8", "pieceWgt": $9, "listPrice": $10
