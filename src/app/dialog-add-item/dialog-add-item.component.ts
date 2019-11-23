@@ -7,7 +7,10 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
   styleUrls: ['./dialog-add-item.component.css']
 })
 export class DialogAddItemComponent implements OnInit {
-  input = {quantity: null}
+  input = {
+    quantity: null,
+    costCode: null
+  }
 
   constructor(
     public dialogRef: MatDialogRef<DialogAddItemComponent>,

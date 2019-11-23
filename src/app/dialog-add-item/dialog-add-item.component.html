@@ -2,12 +2,16 @@
 <p>{{data.description1}}</p>
 <p>{{data.description2}}</p>
 <div mat-dialog-content>
-  <p>Quantity?</p>
+
   <mat-form-field>
-    <input matInput [(ngModel)]="input.quantity">
+    <input matInput [(ngModel)]="input.quantity" placeholder="Quantity">
   </mat-form-field>
+  <mat-form-field>
+    <input matInput [(ngModel)]="input.costCode" placeholder="Cost Code">
+  </mat-form-field>
+
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button [mat-dialog-close]="input.quantity" cdkFocusInitial>Ok</button>
+  <button mat-button [mat-dialog-close]="input" cdkFocusInitial>Ok</button>
 </div>

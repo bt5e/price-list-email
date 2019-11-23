@@ -73,6 +73,10 @@
       <th mat-header-cell *matHeaderCellDef>Quantity</th>
       <td mat-cell *matCellDef="let element"> {{element.quantity}} </td>
     </ng-container>
+    <ng-container matColumnDef="costCode">
+      <th mat-header-cell *matHeaderCellDef>Cost Code</th>
+      <td mat-cell *matCellDef="let element"> {{element.costCode}} </td>
+    </ng-container>
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>Actions</th>
       <td mat-cell *matCellDef="let element">

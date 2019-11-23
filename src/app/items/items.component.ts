@@ -14,7 +14,7 @@ import {DialogAddItemComponent} from "../dialog-add-item/dialog-add-item.compone
 })
 export class ItemsComponent implements OnInit {
   displayedColumns: string[] = ['partNumber', 'description1', 'description2', 'pieceQty', 'bndlQty', 'liftQty', 'upcCode', 'actions'];
-  selectedItemsDisplayedColumns: string[] = ['partNumber', 'description1', 'description2', 'upcCode', 'quantity', 'actions'];
+  selectedItemsDisplayedColumns: string[] = ['partNumber', 'description1', 'description2', 'upcCode', 'quantity', 'costCode', 'actions'];
   priceList: MatTableDataSource<any>;
   private selectedItems = [];
   selectedItemsDataSource: MatTableDataSource<any>;
@@ -54,7 +54,8 @@ export class ItemsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       if (result) {
-        element.quantity = result;
+        element.quantity = result.quantity;
+        element.costCode = result.costCode;
         this.selectedItemsDataSource.data.push(element);
         this.selectedItemsDataSource._updateChangeSubscription();
       }
@@ -71,7 +72,7 @@ export class ItemsComponent implements OnInit {
 
   downloadEmail() {
     const fName = "order.eml";
-    let orderContent = this.selectedItemsDataSource.data.map(entry => `<tr><td>${entry.partNumber}</td><td>${entry.description1}</td><td>${entry.description2}</td><td>${entry.upcCode}</td><td>${entry.quantity}</td></tr>`).join('');
+    let orderContent = this.selectedItemsDataSource.data.map(entry => `<tr><td>${entry.partNumber}</td><td>${entry.description1}</td><td>${entry.description2}</td><td>${entry.upcCode}</td><td>${entry.quantity}</td><td>${entry.costCode}</td></tr>`).join('');
 
     let emailContent = "To: User <user@domain.demo>\n" +
       "Subject: Subject\n" +
@@ -87,6 +88,7 @@ export class ItemsComponent implements OnInit {
       "<th>Description</th>" +
       "<th>UPC Code</th>" +
       "<th>Quantity</th>" +
+      "<th>Cost Code</th>" +
       "</thead>" +
       "<tbody>" +
       orderContent +
