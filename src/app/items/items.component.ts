@@ -13,11 +13,11 @@ import {DialogAddItemComponent} from "../dialog-add-item/dialog-add-item.compone
   styleUrls: ['./items.component.css']
 })
 export class ItemsComponent implements OnInit {
-  private displayedColumns: string[] = ['partNumber', 'description1', 'description2', 'pieceQty', 'bndlQty', 'liftQty', 'upcCode', 'actions'];
-  private selectedItemsDisplayedColumns: string[] = ['partNumber', 'description1', 'description2', 'upcCode', 'quantity', 'actions'];
-  private priceList: MatTableDataSource<any>;
+  displayedColumns: string[] = ['partNumber', 'description1', 'description2', 'pieceQty', 'bndlQty', 'liftQty', 'upcCode', 'actions'];
+  selectedItemsDisplayedColumns: string[] = ['partNumber', 'description1', 'description2', 'upcCode', 'quantity', 'actions'];
+  priceList: MatTableDataSource<any>;
   private selectedItems = [];
-  private selectedItemsDataSource: MatTableDataSource<any>;
+  selectedItemsDataSource: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
