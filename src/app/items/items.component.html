@@ -1,8 +1,10 @@
 <div class="mat-elevation-z8">
 
-  <mat-form-field>
-    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-  </mat-form-field>
+  <div class="center">
+    <mat-form-field class="filter-field">
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
+  </div>
 
   <table mat-table [dataSource]="priceList">
     <ng-container matColumnDef="partNumber">
