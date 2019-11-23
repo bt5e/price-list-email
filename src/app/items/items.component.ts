@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {MatPaginator} from "@angular/material/paginator";
 import {MatTableDataSource} from "@angular/material/table";
 import {saveAs} from 'file-saver';
+import * as XLSX from 'xlsx';
 import {MatDialog} from "@angular/material/dialog";
 import {DialogAddItemComponent} from "../dialog-add-item/dialog-add-item.component";
 
@@ -68,6 +69,15 @@ export class ItemsComponent implements OnInit {
       this.selectedItemsDataSource.data.splice(index, 1);
     }
     this.selectedItemsDataSource._updateChangeSubscription();
+  }
+
+  downloadExcel() {
+    const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.selectedItemsDataSource.data);
+    const wb: XLSX.WorkBook = {Sheets: {'data': ws}, SheetNames: ['data']};
+    const excelBuffer: any = XLSX.write(wb, {bookType: 'xlsx', type: 'array'});
+    const data: Blob = new Blob([excelBuffer], {type: fileType});
+    saveAs(data, "order.xlsx");
   }
 
   downloadEmail() {

@@ -2,8 +2,7 @@ table {
   width: 100%;
 }
 
-.email-button {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+.center {
+  display: flex;
+  justify-content: center;
 }
