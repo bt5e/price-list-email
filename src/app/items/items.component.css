@@ -25,3 +25,7 @@ table {
   width: 60%;
   margin: 4px;
 }
+
+.download-buttons {
+  font-size: 0.5rem;
+}
