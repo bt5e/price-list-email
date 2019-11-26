@@ -7,6 +7,7 @@ import {saveAs} from 'file-saver';
 import * as XLSX from 'xlsx';
 import {MatDialog} from "@angular/material/dialog";
 import {DialogAddItemComponent} from "../dialog-add-item/dialog-add-item.component";
+import {MatSelect} from "@angular/material/select";
 
 @Component({
   selector: 'app-items',
@@ -17,8 +18,10 @@ export class ItemsComponent implements OnInit {
   displayedColumns: string[] = ['service', 'costCode', 'type', 'size', 'extendedSize', 'description', 'manufacturer', 'modelSerialPartNumber', 'vendor', 'actions'];
   selectedItemsDisplayedColumns: string[] = ['quantity', 'costCode', 'type', 'size', 'extendedSize', 'description', 'manufacturer', 'modelSerialPartNumber', 'vendor', 'actions'];
   excelExportColumns: string[] = ['quantity', 'costCode', 'type', 'size', 'extendedSize', 'description', 'manufacturer', 'modelSerialPartNumber', 'vendor'];
-  services: string[];
-  sizes: string[]
+
+  serviceSelections: string[];
+  sizeSelections: string[]
+
   materialList: MatTableDataSource<any>;
   selectedItemsDataSource = new MatTableDataSource<any>();
 
@@ -27,6 +30,7 @@ export class ItemsComponent implements OnInit {
     size: '',
     text: '',
   };
+  @ViewChild('serviceFilterSelect', {static: true}) serviceFilterSelect: MatSelect;
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
@@ -48,9 +52,12 @@ export class ItemsComponent implements OnInit {
     this.materialList = new MatTableDataSource(data);
     this.materialList.paginator = this.paginator;
     this.materialList.filterPredicate = this.tableFilter();
+    this.updateFilterDropDownSelections(data);
+  }
 
-    this.sizes = this.createDropDownSelectionsFromRaw(data.map(value => value['size']));
-    this.services = this.createDropDownSelectionsFromRaw(data.map(value => value['service']));
+  private updateFilterDropDownSelections(data: any[]) {
+    this.sizeSelections = this.createDropDownSelectionsFromRaw(data.map(value => value['size']));
+    this.serviceSelections = this.createDropDownSelectionsFromRaw(data.map(value => value['service']));
   }
 
   private createDropDownSelectionsFromRaw(rawList: any[]): any[] {
@@ -80,19 +87,30 @@ export class ItemsComponent implements OnInit {
     return filterFunction;
   }
 
+  resetFilters(){
+    this.filterValues.service = '';
+    this.filterValues.size = '';
+    this.filterValues.text = '';
+    this.materialList.filter = null;
+    this.updateFilterDropDownSelections(this.materialList.filteredData);
+  }
+
   applyTextFilter(filterValue: string) {
     this.filterValues.text = filterValue.trim().toLowerCase();
     this.materialList.filter = JSON.stringify(this.filterValues);
+    this.updateFilterDropDownSelections(this.materialList.filteredData);
   }
 
   applyServiceFilter(filterValue: string) {
     this.filterValues.service = filterValue.trim();
     this.materialList.filter = JSON.stringify(this.filterValues);
+    this.updateFilterDropDownSelections(this.materialList.filteredData);
   }
 
   applySizeFilter(filterValue: string) {
     this.filterValues.size = filterValue.trim();
     this.materialList.filter = JSON.stringify(this.filterValues);
+    this.updateFilterDropDownSelections(this.materialList.filteredData);
   }
 
   addItem(element: any) {

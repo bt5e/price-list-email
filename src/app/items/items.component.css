@@ -7,15 +7,21 @@ table {
   justify-content: center;
 }
 
-.filter-text-field {
-  width: 50%;
-  margin: 4px;
+.filters {
+  width: 80%;
 }
+
 .filter-service-field {
   width: 20%;
   margin: 4px;
 }
+
 .filter-size-field {
   width: 10%;
+  margin: 4px;
+}
+
+.filter-text-field {
+  width: 60%;
   margin: 4px;
 }
