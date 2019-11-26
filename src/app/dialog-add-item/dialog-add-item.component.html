@@ -1,17 +1,17 @@
-<h1 mat-dialog-title>{{data.partNumber}}</h1>
-<p>{{data.description1}}</p>
-<p>{{data.description2}}</p>
-<div mat-dialog-content>
+<p>{{data.costCode}}</p>
+<p>{{data.type}}</p>
+<p>{{data.size}}</p>
+<p>{{data.extendedSize}}</p>
+<p>{{data.description}}</p>
+<p>{{data.manufacturer}}</p>
 
+<div mat-dialog-content>
   <mat-form-field>
     <input matInput [(ngModel)]="input.quantity" placeholder="Quantity">
   </mat-form-field>
-  <mat-form-field>
-    <input matInput [(ngModel)]="input.costCode" placeholder="Cost Code">
-  </mat-form-field>
-
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button [mat-dialog-close]="input" cdkFocusInitial>Ok</button>
+  <button mat-button (click)="onNoClick()" cdkFocusInitial>Cancel</button>
+  <button mat-button [mat-dialog-close]="input" [disabled]="!input.quantity || input.quantity.trim().length === 0 ">Ok
+  </button>
 </div>

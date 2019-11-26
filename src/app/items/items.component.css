@@ -7,6 +7,11 @@ table {
   justify-content: center;
 }
 
-.filter-field {
-  width: 70%;
+.filter-text-field {
+  width: 60%;
+  margin: 4px;
+}
+.filter-service-field {
+  width: 20%;
+  margin: 4px;
 }

@@ -11,6 +11,7 @@ import {MatInputModule} from "@angular/material/input";
 import {DialogAddItemComponent} from './dialog-add-item/dialog-add-item.component';
 import {MatDialogModule} from "@angular/material/dialog";
 import {FormsModule} from "@angular/forms";
+import {MatSelectModule} from "@angular/material/select";
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import {FormsModule} from "@angular/forms";
     MatPaginatorModule,
     MatInputModule,
     MatDialogModule,
-    FormsModule
+    FormsModule,
+    MatSelectModule
   ],
   entryComponents: [DialogAddItemComponent],
   providers: [],

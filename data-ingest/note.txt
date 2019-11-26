@@ -1,3 +1,17 @@
-STREAMLINE COPPER TUBE
-(.*)\t(.*)\t(.*)\t(.*)\t(.*)\t(.*)\t(.*)\t(.*)\t(.*)\t(.*)
-{"partNumber": "$1", "prtgrp": "$2", "description1": "$3", "description2": "$4", "pieceQty": $5, "bndlQty": $6, "liftQty": $7, "upcCode": "$8", "pieceWgt": $9, "listPrice": $10
+## escape double quotes
+"
+\"
+
+## create json objects
+(.*)\t(.*)\t(.*)\t(.*)\t(.*)\t(.*)\t(.*)\t(.*)\t(.*)\t(.*)\t(.*)
+{"service": "$1", "costCode": "$2", "type": "$3", "size": "$5", "extendedSize": "$6", "description": "$7", "manufacturer": "$8", "modelSerialPartNumber": "$9", "vendor": "$10" },
+
+service
+costCode
+type
+size
+extendedSize
+description
+manufacturer
+modelSerialPartNumber
+vendor

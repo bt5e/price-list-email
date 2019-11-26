@@ -8,8 +8,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 })
 export class DialogAddItemComponent implements OnInit {
   input = {
-    quantity: null,
-    costCode: null
+    quantity: null
   }
 
   constructor(
