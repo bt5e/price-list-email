@@ -17,12 +17,14 @@ export class ItemsComponent implements OnInit {
   displayedColumns: string[] = ['service', 'costCode', 'type', 'size', 'extendedSize', 'description', 'manufacturer', 'modelSerialPartNumber', 'vendor', 'actions'];
   selectedItemsDisplayedColumns: string[] = ['quantity', 'costCode', 'type', 'size', 'extendedSize', 'description', 'manufacturer', 'modelSerialPartNumber', 'vendor', 'actions'];
   excelExportColumns: string[] = ['quantity', 'costCode', 'type', 'size', 'extendedSize', 'description', 'manufacturer', 'modelSerialPartNumber', 'vendor'];
-  services: string[] = ['', 'CONSUMABLES - GENERAL CONDITIONS', 'UNDERGROUND PLUMBING', 'ABOVEGROUND WASTE & VENT'];
+  services: string[];
+  sizes: string[]
   materialList: MatTableDataSource<any>;
   selectedItemsDataSource = new MatTableDataSource<any>();
 
   filterValues = {
     service: '',
+    size: '',
     text: '',
   };
 
@@ -42,20 +44,32 @@ export class ItemsComponent implements OnInit {
     return this.httpClient.get("./assets/data.json");
   }
 
-  private populateTableDataSource(data) {
+  private populateTableDataSource(data: []) {
     this.materialList = new MatTableDataSource(data);
     this.materialList.paginator = this.paginator;
     this.materialList.filterPredicate = this.tableFilter();
+
+    this.sizes = this.createDropDownSelectionsFromRaw(data.map(value => value['size']));
+    this.services = this.createDropDownSelectionsFromRaw(data.map(value => value['service']));
+  }
+
+  private createDropDownSelectionsFromRaw(rawList: any[]): any[] {
+    let dropDownSelections = rawList
+      .filter((value, index, array) => array.indexOf(value) === index)
+      .filter(value => value !== '');
+    dropDownSelections.push(''); // blank selection
+    dropDownSelections.sort();
+    return dropDownSelections;
   }
 
   tableFilter(): (data: any, filter: string) => boolean {
     let filterFunction = function (data, filter): boolean {
       let searchTerms = JSON.parse(filter);
-      return data.service.indexOf(searchTerms.service) !== -1
-        && (
+      return data.service.indexOf(searchTerms.service) !== -1 &&
+        data.size.indexOf(searchTerms.size) !== -1 &&
+        (
           data.costCode.toString().toLowerCase().indexOf(searchTerms.text) !== -1 ||
           data.type.toString().toLowerCase().indexOf(searchTerms.text) !== -1 ||
-          data.size.toString().toLowerCase().indexOf(searchTerms.text) !== -1 ||
           data.extendedSize.toString().toLowerCase().indexOf(searchTerms.text) !== -1 ||
           data.description.toString().toLowerCase().indexOf(searchTerms.text) !== -1 ||
           data.manufacturer.toString().toLowerCase().indexOf(searchTerms.text) !== -1 ||
@@ -73,6 +87,11 @@ export class ItemsComponent implements OnInit {
 
   applyServiceFilter(filterValue: string) {
     this.filterValues.service = filterValue.trim();
+    this.materialList.filter = JSON.stringify(this.filterValues);
+  }
+
+  applySizeFilter(filterValue: string) {
+    this.filterValues.size = filterValue.trim();
     this.materialList.filter = JSON.stringify(this.filterValues);
   }
 
