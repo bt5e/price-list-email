@@ -5,13 +5,14 @@
 <p>{{data.description}}</p>
 <p>{{data.manufacturer}}</p>
 
-<div mat-dialog-content>
-  <mat-form-field>
-    <input matInput [(ngModel)]="input.quantity" placeholder="Quantity">
-  </mat-form-field>
-</div>
-<div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()" cdkFocusInitial>Cancel</button>
-  <button mat-button [mat-dialog-close]="input" [disabled]="!input.quantity || input.quantity.trim().length === 0 ">Ok
-  </button>
+<form (submit)="onSubmit()">
+  <div mat-dialog-content [formGroup]="form" (submit)="onSubmit()">
+    <mat-form-field>
+      <input type="number" formControlName="quantity" cdkFocusInitial matInput placeholder="Quantity" required>
+    </mat-form-field>
+  </div>
+</form>
+<div mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button (click)="onSubmit()" type="submit">Save</button>
 </div>
