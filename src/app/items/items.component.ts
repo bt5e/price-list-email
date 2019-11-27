@@ -72,8 +72,8 @@ export class ItemsComponent implements OnInit {
   tableFilter(): (data: any, filter: string) => boolean {
     let filterFunction = function (data, filter): boolean {
       let searchTerms = JSON.parse(filter);
-      return data.service.indexOf(searchTerms.service) !== -1 &&
-        data.size.indexOf(searchTerms.size) !== -1 &&
+      return (searchTerms.service ? data.service === searchTerms.service : true) &&
+        (searchTerms.size ? data.size === searchTerms.size : true) &&
         (
           data.costCode.toString().toLowerCase().indexOf(searchTerms.text) !== -1 ||
           data.type.toString().toLowerCase().indexOf(searchTerms.text) !== -1 ||
@@ -87,7 +87,7 @@ export class ItemsComponent implements OnInit {
     return filterFunction;
   }
 
-  resetFilters(){
+  resetFilters() {
     this.filterValues.service = '';
     this.filterValues.size = '';
     this.filterValues.text = '';
