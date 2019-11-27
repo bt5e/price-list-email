@@ -121,8 +121,9 @@ export class ItemsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        element.quantity = result.quantity;
-        this.selectedItemsDataSource.data.push(element);
+        const newElement = {...element};
+        newElement.quantity = result.quantity;
+        this.selectedItemsDataSource.data.push(newElement);
         this.selectedItemsDataSource._updateChangeSubscription();
       }
     });
