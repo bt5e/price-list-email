@@ -4,7 +4,7 @@
 
 ## create json objects
 (.*)\t(.*)\t(.*)\t(.*)\t(.*)\t(.*)\t(.*)\t(.*)\t(.*)\t(.*)\t(.*)
-{"service": "$1", "costCode": "$2", "type": "$3", "size": "$5", "extendedSize": "$6", "description": "$7", "manufacturer": "$8", "modelSerialPartNumber": "$9", "vendor": "$10" },
+{"service": "$1", "costCode": "$2", "type": "$3", "size": "$5", "extendedSize": "$6", "description": "$7",  "link": "$8", "manufacturer": "$9", "modelSerialPartNumber": "$10", "vendor": "$11" },
 
 service
 costCode
