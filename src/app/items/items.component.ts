@@ -8,6 +8,8 @@ import * as XLSX from 'xlsx';
 import {MatDialog} from "@angular/material/dialog";
 import {DialogAddItemComponent} from "../dialog-add-item/dialog-add-item.component";
 import {MatSelect} from "@angular/material/select";
+import {FormControl} from "@angular/forms";
+import {map, startWith} from "rxjs/operators";
 
 @Component({
   selector: 'app-items',
@@ -19,8 +21,13 @@ export class ItemsComponent implements OnInit {
   selectedItemsDisplayedColumns: string[] = ['quantity', 'costCode', 'type', 'size', 'extendedSize', 'description', 'manufacturer', 'modelSerialPartNumber', 'vendor', 'actions'];
   excelExportColumns: string[] = ['quantity', 'costCode', 'type', 'size', 'extendedSize', 'description', 'manufacturer', 'modelSerialPartNumber', 'vendor'];
 
-  serviceSelections: string[];
-  sizeSelections: string[]
+  serviceFilterControl = new FormControl();
+  serviceOptions: string[];
+  filteredServiceOptions: Observable<string[]>;
+
+  sizeFilterControl = new FormControl();
+  sizeOptions: string[]
+  filteredSizeOptions: Observable<string[]>;
 
   materialList: MatTableDataSource<any>;
   selectedItemsDataSource = new MatTableDataSource<any>();
@@ -56,8 +63,19 @@ export class ItemsComponent implements OnInit {
   }
 
   private updateFilterDropDownSelections(data: any[]) {
-    this.sizeSelections = this.createDropDownSelectionsFromRaw(data.map(value => value['size']));
-    this.serviceSelections = this.createDropDownSelectionsFromRaw(data.map(value => value['service']));
+    this.sizeOptions = this.createDropDownSelectionsFromRaw(data.map(value => value['size']));
+    this.filteredSizeOptions = this.sizeFilterControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this.sizeOptions.filter(option => option.toLowerCase().includes(value.toLowerCase())))
+      );
+
+    this.serviceOptions = this.createDropDownSelectionsFromRaw(data.map(value => value['service']));
+    this.filteredServiceOptions = this.serviceFilterControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this.serviceOptions.filter(option => option.toLowerCase().includes(value.toLowerCase())))
+      );
   }
 
   private createDropDownSelectionsFromRaw(rawList: any[]): any[] {
