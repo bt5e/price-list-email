@@ -2,7 +2,7 @@
 
   <div class="center">
     <div class="filters">
-      <button class="fas fa-undo" mat-button (click)="resetFilters()">Reset</button>
+      <button class="fas fa-undo" mat-raised-button color="accent"  (click)="resetFilters()">Reset</button>
 
       <mat-form-field class="filter-service-field">
         <input type="text" placeholder="Service" matInput [formControl]="serviceFilterControl" [matAutocomplete]="serviceAuto"
