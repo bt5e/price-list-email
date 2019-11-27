@@ -159,6 +159,9 @@ export class ItemsComponent implements OnInit {
     const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.selectedItemsDataSource.data, {header: this.excelExportColumns});
     const wb: XLSX.WorkBook = {Sheets: {'data': ws}, SheetNames: ['data']};
+    const wsCols = [{wch: 8}, {wch: 10}, {wch: 10}, {wch: 10}, {wch: 10}, {wch: 30}, {wch: 15}, {wch: 15}, {wch: 10}, {wch: 15}, {wch: 20},];
+    ws['!cols'] = wsCols;
+
     const excelBuffer: any = XLSX.write(wb, {bookType: 'xlsx', type: 'array'});
     const data: Blob = new Blob([excelBuffer], {type: fileType});
     saveAs(data, "order.xlsx");
