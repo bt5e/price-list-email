@@ -28,4 +28,8 @@ table {
 
 .download-buttons {
   font-size: 0.5rem;
+  margin: 10px;
+}
+.download-button-spacer {
+  width:  5rem;
 }
