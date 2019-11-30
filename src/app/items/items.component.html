@@ -1,7 +1,7 @@
 <div class="mat-elevation-z8">
 
   <div class="center">
-    <div class="filters">
+    <div class="filters" fxShow.gt-sm="true" fxShow="false">
       <button class="fas fa-undo" mat-raised-button color="accent" (click)="resetFilters()">Reset</button>
 
       <mat-form-field class="filter-service-field">
@@ -15,7 +15,7 @@
         </mat-autocomplete>
       </mat-form-field>
 
-      <mat-form-field class="filter-size-field">
+      <mat-form-field class="filter-size-field" fxShow.gt-sm="true" fxShow="false">
         <input type="text" placeholder="Size" matInput [formControl]="sizeFilterControl" [matAutocomplete]="sizeAuto"
                [value]="filterValues.size">
         <mat-autocomplete #sizeAuto="matAutocomplete" (optionSelected)="applySizeFilter($event.option.value)">
@@ -29,6 +29,38 @@
         <input matInput (keyup)="applyTextFilter($event.target.value)"
                [value]="filterValues.text" placeholder="Filter">
       </mat-form-field>
+    </div>
+
+    <div class="filters" fxHide.gt-sm="true" fxHide="false">
+      <div class="filter-row">
+        <button class="fas fa-undo" mat-raised-button color="accent" (click)="resetFilters()">Reset</button>
+      </div>
+      <div class="filter-row">
+        <mat-form-field class="filter-row-field">
+          <mat-label>Service</mat-label>
+          <mat-select (selectionChange)="applyServiceFilter($event.value)" [value]="filterValues.service">
+            <mat-option *ngFor="let service of filteredServiceOptions | async" [value]="service">
+              {{service}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="filter-row">
+        <mat-form-field class="filter-row-field">
+          <mat-label>Size</mat-label>
+          <mat-select (selectionChange)="applySizeFilter($event.value)" [value]="filterValues.size">
+            <mat-option *ngFor="let size of filteredSizeOptions | async" [value]="size">
+              {{size}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="filter-row">
+        <mat-form-field class="filter-row-field">
+          <input matInput (keyup)="applyTextFilter($event.target.value)"
+                 [value]="filterValues.text" placeholder="Filter">
+        </mat-form-field>
+      </div>
     </div>
   </div>
 
@@ -78,9 +110,29 @@
         <button class="fas fa-plus-square" mat-button (click)="addItem(element)"></button>
       </td>
     </ng-container>
+    <ng-container matColumnDef="consolidatedColumn">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <mat-card class="example-card">
+          <mat-card-content>
+            <p><label>Service: </label>{{element.service}}</p>
+            <p><label>Cost Code: </label>{{element.costCode}}</p>
+            <p><label>Type: </label>{{element.type}}</p>
+            <p><label>Size: </label>{{element.size}}</p>
+            <p><label>Extended Size: </label>{{element.extendedSize}}</p>
+            <label>Description: </label>
+            <a *ngIf="element.link" [href]="element.link" target="_blank">{{element.description}}</a>
+            <div *ngIf="!element.link">{{element.description}}</div>
+          </mat-card-content>
+          <mat-card-actions align="end">
+            <button class="fas fa-plus-square" mat-button (click)="addItem(element)"></button>
+          </mat-card-actions>
+        </mat-card>
+      </td>
+    </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-header-row *matHeaderRowDef="materialTableColumns" fxShow.gt-sm="true" fxShow="false"></tr>
+    <tr mat-row *matRowDef="let row; columns: materialTableColumns;"></tr>
   </table>
 
   <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
@@ -136,8 +188,28 @@
         <button class="fas fa-minus-square" mat-button (click)="removeItem(element)"></button>
       </td>
     </ng-container>
+    <ng-container matColumnDef="consolidatedColumn">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <mat-card class="example-card">
+          <mat-card-content>
+            <p><label>Quantity: </label>{{element.quantity}}</p>
+            <p><label>Cost Code: </label>{{element.costCode}}</p>
+            <p><label>Type: </label>{{element.type}}</p>
+            <p><label>Size: </label>{{element.size}}</p>
+            <p><label>Extended Size: </label>{{element.extendedSize}}</p>
+            <label>Description: </label>
+            <a *ngIf="element.link" [href]="element.link" target="_blank">{{element.description}}</a>
+            <div *ngIf="!element.link">{{element.description}}</div>
+          </mat-card-content>
+          <mat-card-actions align="end">
+            <button class="fas fa-minus-square" mat-button (click)="removeItem(element)"></button>
+          </mat-card-actions>
+        </mat-card>
+      </td>
+    </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="selectedItemsDisplayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: selectedItemsDisplayedColumns;"></tr>
+    <tr mat-header-row *matHeaderRowDef="materialOrderTableColumns" fxShow.gt-sm="true" fxShow="false"></tr>
+    <tr mat-row *matRowDef="let row; columns: materialOrderTableColumns;"></tr>
   </table>
 </div>

@@ -8,7 +8,17 @@ table {
 }
 
 .filters {
+  margin: 4px;
   width: 80%;
+}
+
+.filter-row {
+  margin: 4px;
+  width: 100%;
+}
+
+.filter-row-field {
+  width: 100%;
 }
 
 .filter-service-field {
@@ -30,6 +40,7 @@ table {
   font-size: 0.5rem;
   margin: 10px;
 }
+
 .download-button-spacer {
-  width:  5rem;
+  width: 5rem;
 }

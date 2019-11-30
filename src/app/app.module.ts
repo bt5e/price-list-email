@@ -13,6 +13,8 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatSelectModule} from "@angular/material/select";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {FlexLayoutModule} from '@angular/flex-layout';
+import {MatCardModule} from "@angular/material/card";
 
 @NgModule({
   declarations: [
@@ -31,7 +33,9 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
     FormsModule,
     MatSelectModule,
     MatAutocompleteModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FlexLayoutModule,
+    MatCardModule,
   ],
   entryComponents: [DialogAddItemComponent],
   providers: [],

@@ -3,13 +3,13 @@ import {Observable} from "rxjs";
 import {HttpClient} from '@angular/common/http';
 import {MatPaginator} from "@angular/material/paginator";
 import {MatTableDataSource} from "@angular/material/table";
-import {saveAs} from 'file-saver';
-import * as XLSX from 'xlsx';
 import {MatDialog} from "@angular/material/dialog";
 import {DialogAddItemComponent} from "../dialog-add-item/dialog-add-item.component";
 import {MatSelect} from "@angular/material/select";
 import {FormControl} from "@angular/forms";
 import {map, startWith} from "rxjs/operators";
+import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
+import {DownloadService} from "../services/download/download.service";
 
 @Component({
   selector: 'app-items',
@@ -17,9 +17,12 @@ import {map, startWith} from "rxjs/operators";
   styleUrls: ['./items.component.css']
 })
 export class ItemsComponent implements OnInit {
-  displayedColumns: string[] = ['service', 'costCode', 'type', 'size', 'extendedSize', 'description', 'manufacturer', 'modelSerialPartNumber', 'vendor', 'actions'];
-  selectedItemsDisplayedColumns: string[] = ['quantity', 'costCode', 'type', 'size', 'extendedSize', 'description', 'manufacturer', 'modelSerialPartNumber', 'vendor', 'actions'];
-  excelExportColumns: string[] = ['quantity', 'costCode', 'type', 'size', 'extendedSize', 'description', 'manufacturer', 'modelSerialPartNumber', 'vendor'];
+  materialTableColumnsAll: string[] = ['service', 'costCode', 'type', 'size', 'extendedSize', 'description', 'manufacturer', 'modelSerialPartNumber', 'vendor', 'actions'];
+  materialTableColumnsSmallDevices: string[] = ['consolidatedColumn'];
+  materialTableColumns: string[] = this.materialTableColumnsAll;
+  materialOrderTableColumnsAll: string[] = ['quantity', 'costCode', 'type', 'size', 'extendedSize', 'description', 'manufacturer', 'modelSerialPartNumber', 'vendor', 'actions'];
+  materialOrderTableColumnsSmallDevices: string[] = ['consolidatedColumn'];
+  materialOrderTableColumns: string[] = this.materialOrderTableColumnsAll;
 
   serviceFilterControl = new FormControl();
   serviceOptions: string[];
@@ -42,7 +45,16 @@ export class ItemsComponent implements OnInit {
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
   constructor(private httpClient: HttpClient,
+              private breakpointObserver: BreakpointObserver,
+              private downloadService: DownloadService,
               private dialog: MatDialog) {
+    breakpointObserver.observe([
+      Breakpoints.XSmall,
+      Breakpoints.Small,
+    ]).subscribe(result => {
+        if (result.matches) this.activateHandsetPortraitLayout()
+      }
+    );
   }
 
   ngOnInit() {
@@ -155,58 +167,16 @@ export class ItemsComponent implements OnInit {
     this.selectedItemsDataSource._updateChangeSubscription();
   }
 
-  downloadExcel() {
-    const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.selectedItemsDataSource.data, {header: this.excelExportColumns});
-    const wb: XLSX.WorkBook = {Sheets: {'data': ws}, SheetNames: ['data']};
-    const wsCols = [{wch: 8}, {wch: 10}, {wch: 10}, {wch: 10}, {wch: 10}, {wch: 30}, {wch: 15}, {wch: 15}, {wch: 10}, {wch: 15}, {wch: 20},];
-    ws['!cols'] = wsCols;
-
-    const excelBuffer: any = XLSX.write(wb, {bookType: 'xlsx', type: 'array'});
-    const data: Blob = new Blob([excelBuffer], {type: fileType});
-    saveAs(data, "order.xlsx");
+  downloadEmail() {
+    this.downloadService.downloadEmail(this.selectedItemsDataSource.data);
   }
 
-  downloadEmail() {
-    const fName = "order.eml";
-    let orderContent = this.selectedItemsDataSource.data.map(entry => `
-<tr>
-<td>${entry.quantity}</td>
-<td>${entry.costCode}</td>
-<td>${entry.type}</td>
-<td>${entry.size}</td>
-<td>${entry.extendedSize}</td>
-<td>${entry.description}</td>
-<td>${entry.manufacturer}</td>
-<td>${entry.modelSerialPartNumber}</td>
-<td>${entry.vendor}</td>
-</tr>`).join('');
+  downloadExcel() {
+    this.downloadService.downloadExcel(this.selectedItemsDataSource.data);
+  }
 
-    let emailContent = "To: User <user@domain.demo>\n" +
-      "Subject: Subject\n" +
-      "X-Unsent: 1\n" +
-      "Content-Type: text/html\n" +
-      "\n" +
-      "<html>" +
-      "<head></head>" +
-      "<body>" +
-      "<table width=100% border=1><thead>" +
-      "<th>Quantity</th>" +
-      "<th>Cost Code</th>" +
-      "<th>Type</th>" +
-      "<th>Size</th>" +
-      "<th>Extended Size</th>" +
-      "<th>Description</th>" +
-      "<th>Manufacturer</th>" +
-      "<th>Model/Serial/Part#</th>" +
-      "<th>Vendor</th>" +
-      "</thead>" +
-      "<tbody>" +
-      orderContent +
-      "</tbody></table>" +
-      "</body>" +
-      "</html>";
-    const blob = new Blob([emailContent], {type: "message/rfc822;charset=utf-8"});
-    saveAs(blob, fName);
+  private activateHandsetPortraitLayout() {
+    this.materialTableColumns = this.materialTableColumnsSmallDevices;
+    this.materialOrderTableColumns = this.materialOrderTableColumnsSmallDevices;
   }
 }
