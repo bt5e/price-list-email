@@ -28,6 +28,10 @@ export class ItemsComponent implements OnInit {
   serviceOptions: string[];
   filteredServiceOptions: Observable<string[]>;
 
+  typeFilterControl = new FormControl();
+  typeOptions: string[];
+  filteredTypeOptions: Observable<string[]>;
+
   sizeFilterControl = new FormControl();
   sizeOptions: string[]
   filteredSizeOptions: Observable<string[]>;
@@ -37,6 +41,7 @@ export class ItemsComponent implements OnInit {
 
   filterValues = {
     service: '',
+    type: '',
     size: '',
     text: '',
   };
@@ -82,6 +87,13 @@ export class ItemsComponent implements OnInit {
         map(value => this.sizeOptions.filter(option => option.toLowerCase().includes(value.toLowerCase())))
       );
 
+    this.typeOptions = this.createDropDownSelectionsFromRaw(data.map(value => value['type']));
+    this.filteredTypeOptions = this.typeFilterControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this.typeOptions.filter(option => option.toLowerCase().includes(value.toLowerCase())))
+      );
+
     this.serviceOptions = this.createDropDownSelectionsFromRaw(data.map(value => value['service']));
     this.filteredServiceOptions = this.serviceFilterControl.valueChanges
       .pipe(
@@ -102,16 +114,38 @@ export class ItemsComponent implements OnInit {
   tableFilter(): (data: any, filter: string) => boolean {
     let filterFunction = function (data, filter): boolean {
       let searchTerms = JSON.parse(filter);
+
+      let searchTextTokens = searchTerms.text ? searchTerms.text.toString().split(' ') : [];
+
+      function isSearchTextTokensInFields(fieldValues: any[]): boolean {
+        function isSearchTextTokenInFields(token: string, fieldValues: any[]) {
+          for (let fieldValue of fieldValues) {
+            if (!fieldValue) return false;
+            if (fieldValue.toString().toLowerCase().indexOf(token) !== -1)
+              return true;
+          }
+          return false;
+        }
+
+        for (let token of searchTextTokens) {
+          if (!isSearchTextTokenInFields(token, fieldValues))
+            return false;
+        }
+        return true;
+      }
+
       return (searchTerms.service ? data.service === searchTerms.service : true) &&
+        (searchTerms.type ? data.type === searchTerms.type : true) &&
         (searchTerms.size ? data.size === searchTerms.size : true) &&
-        (
-          data.costCode.toString().toLowerCase().indexOf(searchTerms.text) !== -1 ||
-          data.type.toString().toLowerCase().indexOf(searchTerms.text) !== -1 ||
-          data.extendedSize.toString().toLowerCase().indexOf(searchTerms.text) !== -1 ||
-          data.description.toString().toLowerCase().indexOf(searchTerms.text) !== -1 ||
-          data.manufacturer.toString().toLowerCase().indexOf(searchTerms.text) !== -1 ||
-          data.modelSerialPartNumber.toString().toLowerCase().indexOf(searchTerms.text) !== -1 ||
-          data.vendor.toString().toLowerCase().indexOf(searchTerms.text) !== -1
+        (searchTerms.text ? (
+            isSearchTextTokensInFields([
+              data.costCode,
+              data.type,
+              data.extendedSize,
+              data.description,
+              data.manufacturer,
+              data.modelSerialPartNumber,
+              data.vendor])) : true
         );
     }
     return filterFunction;
@@ -127,6 +161,12 @@ export class ItemsComponent implements OnInit {
 
   applyTextFilter(filterValue: string) {
     this.filterValues.text = filterValue.trim().toLowerCase();
+    this.materialList.filter = JSON.stringify(this.filterValues);
+    this.updateFilterDropDownSelections(this.materialList.filteredData);
+  }
+
+  applyTypeFilter(filterValue: string) {
+    this.filterValues.type = filterValue.trim();
     this.materialList.filter = JSON.stringify(this.filterValues);
     this.updateFilterDropDownSelections(this.materialList.filteredData);
   }

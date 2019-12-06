@@ -15,7 +15,18 @@
         </mat-autocomplete>
       </mat-form-field>
 
-      <mat-form-field class="filter-size-field" fxShow.gt-sm="true" fxShow="false">
+      <mat-form-field class="filter-type-field">
+        <input type="text" placeholder="Type" matInput [formControl]="typeFilterControl"
+               [matAutocomplete]="typeAuto"
+               [value]="filterValues.type">
+        <mat-autocomplete #typeAuto="matAutocomplete" (optionSelected)="applyTypeFilter($event.option.value)">
+          <mat-option *ngFor="let type of filteredTypeOptions | async" [value]="type">
+            {{type}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <mat-form-field class="filter-size-field">
         <input type="text" placeholder="Size" matInput [formControl]="sizeFilterControl" [matAutocomplete]="sizeAuto"
                [value]="filterValues.size">
         <mat-autocomplete #sizeAuto="matAutocomplete" (optionSelected)="applySizeFilter($event.option.value)">
@@ -41,6 +52,16 @@
           <mat-select (selectionChange)="applyServiceFilter($event.value)" [value]="filterValues.service">
             <mat-option *ngFor="let service of filteredServiceOptions | async" [value]="service">
               {{service}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="filter-row">
+        <mat-form-field class="filter-row-field">
+          <mat-label>Type</mat-label>
+          <mat-select (selectionChange)="applyTypeFilter($event.value)" [value]="filterValues.type">
+            <mat-option *ngFor="let type of filteredTypeOptions | async" [value]="type">
+              {{type}}
             </mat-option>
           </mat-select>
         </mat-form-field>
