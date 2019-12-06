@@ -118,17 +118,8 @@ export class ItemsComponent implements OnInit {
       let searchTextTokens = searchTerms.text ? searchTerms.text.toString().split(' ') : [];
 
       function isSearchTextTokensInFields(fieldValues: any[]): boolean {
-        function isSearchTextTokenInFields(token: string, fieldValues: any[]) {
-          for (let fieldValue of fieldValues) {
-            if (!fieldValue) return false;
-            if (fieldValue.toString().toLowerCase().indexOf(token) !== -1)
-              return true;
-          }
-          return false;
-        }
-
         for (let token of searchTextTokens) {
-          if (!isSearchTextTokenInFields(token, fieldValues))
+          if (fieldValues.map(value => value.toString().toLowerCase()).join(' ').indexOf(token) === -1)
             return false;
         }
         return true;
