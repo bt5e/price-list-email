@@ -20,7 +20,7 @@ export class ItemsComponent implements OnInit {
   materialTableColumnsAll: string[] = ['service', 'costCode', 'type', 'size', 'extendedSize', 'description', 'manufacturer', 'modelSerialPartNumber', 'vendor', 'actions'];
   materialTableColumnsSmallDevices: string[] = ['consolidatedColumn'];
   materialTableColumns: string[] = this.materialTableColumnsAll;
-  materialOrderTableColumnsAll: string[] = ['quantity', 'costCode', 'type', 'size', 'extendedSize', 'description', 'manufacturer', 'modelSerialPartNumber', 'vendor', 'actions'];
+  materialOrderTableColumnsAll: string[] = ['quantity', 'unitOfMeasure', 'costCode', 'type', 'size', 'extendedSize', 'description', 'manufacturer', 'modelSerialPartNumber', 'vendor', 'actions'];
   materialOrderTableColumnsSmallDevices: string[] = ['consolidatedColumn'];
   materialOrderTableColumns: string[] = this.materialOrderTableColumnsAll;
 
@@ -184,6 +184,7 @@ export class ItemsComponent implements OnInit {
       if (result) {
         const newElement = {...element};
         newElement.quantity = result.quantity;
+        newElement.unitOfMeasure = result.unitOfMeasure;
         this.selectedItemsDataSource.data.push(newElement);
         this.selectedItemsDataSource._updateChangeSubscription();
       }

@@ -6,7 +6,7 @@ import * as XLSX from 'xlsx';
   providedIn: 'root'
 })
 export class DownloadService {
-  private excelExportColumns: string[] = ['quantity', 'costCode', 'type', 'size', 'extendedSize', 'description', 'manufacturer', 'modelSerialPartNumber', 'vendor'];
+  private excelExportColumns: string[] = ['quantity', 'unitOfMeasure', 'costCode', 'type', 'size', 'extendedSize', 'description', 'manufacturer', 'modelSerialPartNumber', 'vendor'];
 
   constructor() {
   }
@@ -29,6 +29,7 @@ export class DownloadService {
     let orderContent = data.map(entry => `
 <tr>
 <td>${entry.quantity}</td>
+<td>${entry.unitOfMeasure}</td>
 <td>${entry.costCode}</td>
 <td>${entry.type}</td>
 <td>${entry.size}</td>
@@ -49,6 +50,7 @@ export class DownloadService {
       "<body>" +
       "<table width=100% border=1><thead>" +
       "<th>Quantity</th>" +
+      "<th>Unit of Measure</th>" +
       "<th>Cost Code</th>" +
       "<th>Type</th>" +
       "<th>Size</th>" +

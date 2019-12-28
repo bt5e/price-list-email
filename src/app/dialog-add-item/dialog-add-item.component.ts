@@ -8,9 +8,10 @@ import {FormControl, FormGroup} from "@angular/forms";
   styleUrls: ['./dialog-add-item.component.css']
 })
 export class DialogAddItemComponent implements OnInit {
-  form = new FormGroup({quantity: new FormControl()});
+  form = new FormGroup({quantity: new FormControl(), unitOfMeasure: new FormControl()});
   input = {
-    quantity: null
+    quantity: null,
+    unitOfMeasure: null
   }
 
   constructor(
@@ -23,6 +24,7 @@ export class DialogAddItemComponent implements OnInit {
     const {value, valid} = this.form;
     if (valid) {
       this.input.quantity = this.form.get('quantity').value;
+      this.input.unitOfMeasure = this.form.get('unitOfMeasure').value;
       this.dialogRef.close(this.input);
     }
   }
