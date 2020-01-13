@@ -40,8 +40,9 @@ export class DownloadService {
 <td>${entry.vendor}</td>
 </tr>`).join('');
 
-    let emailContent = "To: User <user@domain.demo>\n" +
-      "Subject: Subject\n" +
+    let emailContent = "To: jwildasin@shapiroandduncan.com\n" +
+      "Cc: rchurchey@shapiroandduncan.com; bcampbell@shapiroandduncan.com; nlowe@shapiroandduncan.com; ptse@shapiroandduncan.com\n" +
+      "Subject: 1770 Crystal Drive Material Request <Beta Test>\n" +
       "X-Unsent: 1\n" +
       "Content-Type: text/html\n" +
       "\n" +
