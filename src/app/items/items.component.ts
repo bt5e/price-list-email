@@ -10,6 +10,7 @@ import {FormControl} from "@angular/forms";
 import {map, startWith} from "rxjs/operators";
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {DownloadService} from "../services/download/download.service";
+import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 
 @Component({
   selector: 'app-items',
@@ -158,18 +159,45 @@ export class ItemsComponent implements OnInit {
   }
 
   applyTypeFilter(filterValue: string) {
+    this.applyTypeFilterInternal(filterValue);
+  }
+
+  applyTypeFilterFocus(filterValue: string, $event: MatAutocompleteSelectedEvent) {
+    this.applyTypeFilterInternal(filterValue);
+    $event.option.focus(); // reset focus to allow dropdown to appear without clicking away
+  }
+
+  private applyTypeFilterInternal(filterValue: string) {
     this.filterValues.type = filterValue.trim();
     this.materialList.filter = JSON.stringify(this.filterValues);
     this.updateFilterDropDownSelections(this.materialList.filteredData);
   }
 
   applyServiceFilter(filterValue: string) {
+    this.applyServiceFilterInternal(filterValue);
+  }
+
+  applyServiceFilterFocus(filterValue: string, $event: MatAutocompleteSelectedEvent) {
+    this.applyServiceFilterInternal(filterValue);
+    $event.option.focus(); // reset focus to allow dropdown to appear without clicking away
+  }
+
+  private applyServiceFilterInternal(filterValue: string) {
     this.filterValues.service = filterValue.trim();
     this.materialList.filter = JSON.stringify(this.filterValues);
     this.updateFilterDropDownSelections(this.materialList.filteredData);
   }
 
   applySizeFilter(filterValue: string) {
+    this.applySizeFilterInternal(filterValue);
+  }
+
+  applySizeFilterFocus(filterValue: string, $event: MatAutocompleteSelectedEvent) {
+    this.applySizeFilterInternal(filterValue);
+    $event.option.focus(); // reset focus to allow dropdown to appear without clicking away
+  }
+
+  private applySizeFilterInternal(filterValue: string) {
     this.filterValues.size = filterValue.trim();
     this.materialList.filter = JSON.stringify(this.filterValues);
     this.updateFilterDropDownSelections(this.materialList.filteredData);
