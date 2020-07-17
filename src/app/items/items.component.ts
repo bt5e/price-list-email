@@ -144,6 +144,7 @@ export class ItemsComponent implements OnInit {
 
   resetFilters() {
     this.filterValues.service = '';
+    this.filterValues.type = '';
     this.filterValues.size = '';
     this.filterValues.text = '';
     this.materialList.filter = null;
