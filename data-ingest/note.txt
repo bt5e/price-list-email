@@ -17,6 +17,6 @@ modelSerialPartNumber
 vendor
 
 ## build GitHub pages
-ng build --prod --output-path docs --base-href /price-list-email/
-cp docs/index.html docs/404.html
+time ng build --prod --output-path docs --base-href /price-list-email/ && \
+cp docs/index.html docs/404.html && \
 git add .
